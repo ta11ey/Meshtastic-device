@@ -108,6 +108,9 @@ typedef struct _RadioConfig_UserPreferences {
     bool range_test_plugin_enabled;
     uint32_t range_test_plugin_sender;
     bool range_test_plugin_save;
+    bool message_persist_plugin_enabled;
+    uint32_t message_persist_plugin_sender;
+    bool message_persist_plugin_save;
     uint32_t store_forward_plugin_records;
     bool environmental_measurement_plugin_measurement_enabled;
     bool environmental_measurement_plugin_screen_enabled;
@@ -213,6 +216,9 @@ extern "C" {
 #define RadioConfig_UserPreferences_environmental_measurement_plugin_sensor_type_tag 146
 #define RadioConfig_UserPreferences_environmental_measurement_plugin_sensor_pin_tag 147
 #define RadioConfig_UserPreferences_store_forward_plugin_enabled_tag 148
+#define RadioConfig_UserPreferences_message_persist_plugin_enabled_tag 149
+#define RadioConfig_UserPreferences_message_persist_plugin_sender_tag 150
+#define RadioConfig_UserPreferences_message_persist_plugin_save_tag 151
 #define RadioConfig_preferences_tag              1
 
 /* Struct field encoding specification for nanopb */
@@ -276,7 +282,10 @@ X(a, STATIC,   SINGULAR, UINT32,   environmental_measurement_plugin_recovery_int
 X(a, STATIC,   SINGULAR, BOOL,     environmental_measurement_plugin_display_farenheit, 145) \
 X(a, STATIC,   SINGULAR, UENUM,    environmental_measurement_plugin_sensor_type, 146) \
 X(a, STATIC,   SINGULAR, UINT32,   environmental_measurement_plugin_sensor_pin, 147) \
-X(a, STATIC,   SINGULAR, BOOL,     store_forward_plugin_enabled, 148)
+X(a, STATIC,   SINGULAR, BOOL,     store_forward_plugin_enabled, 148) \
+X(a, STATIC,   SINGULAR, BOOL,     message_persist_plugin_enabled, 149) \
+X(a, STATIC,   SINGULAR, UINT32,   message_persist_plugin_sender, 150) \
+X(a, STATIC,   SINGULAR, BOOL,     message_persist_plugin_save, 151)
 #define RadioConfig_UserPreferences_CALLBACK NULL
 #define RadioConfig_UserPreferences_DEFAULT NULL
 

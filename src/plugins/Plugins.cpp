@@ -3,7 +3,7 @@
 #include "plugins/PositionPlugin.h"
 #include "plugins/RemoteHardwarePlugin.h"
 #include "plugins/ReplyPlugin.h"
-#include "plugins/TextMessagePlugin.h" 
+#include "plugins/TextMessagePlugin.h"
 #include "plugins/SerialPlugin.h"
 #include "plugins/TextMessagePlugin.h"
 #include "plugins/RoutingPlugin.h"
@@ -12,6 +12,7 @@
 #include "plugins/SerialPlugin.h"
 #include "plugins/esp32/EnvironmentalMeasurementPlugin.h"
 #include "plugins/esp32/RangeTestPlugin.h"
+#include "plugins/esp32/MessagePersistPlugin.h"
 #include "plugins/esp32/StoreForwardPlugin.h"
 #endif
 
@@ -44,6 +45,7 @@ void setupPlugins()
     storeForwardPlugin = new StoreForwardPlugin();
 
     new RangeTestPlugin();
+    new MessagePersistPlugin();
     // new StoreForwardPlugin();
     new EnvironmentalMeasurementPlugin();
 #endif
