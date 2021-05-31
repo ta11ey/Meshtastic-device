@@ -36,13 +36,10 @@ int32_t MessagePersistPlugin::runOnce()
     */
 
     // radioConfig.preferences.message_persist_plugin_enabled = 1;
-    // radioConfig.preferences.message_persist_plugin_sender = 45;
-    // radioConfig.preferences.message_persist_plugin_save = 1;
 
     // Fixed position is useful when testing indoors.
     // radioConfig.preferences.fixed_position = 1;
 
-    uint32_t senderHeartbeat = radioConfig.preferences.message_persist_plugin_sender * 1000;
 
     if (radioConfig.preferences.message_persist_plugin_enabled) {
 
@@ -54,39 +51,15 @@ int32_t MessagePersistPlugin::runOnce()
 
             firstTime = 0;
 
-            if (radioConfig.preferences.message_persist_plugin_sender) {
-                DEBUG_MSG("Initializing Range Test Plugin -- Sender\n");
-                return (5000); // Sending first message 5 seconds after initilization.
-            } else {
-                DEBUG_MSG("Initializing Range Test Plugin -- Receiver\n");
-                return (500);
-            }
+            DEBUG_MSG("Initializing Message Persist Plugin\n");
+            return (5000); // Sending first message 5 seconds after initilization.
 
         } else {
-
-            if (radioConfig.preferences.message_persist_plugin_sender) {
-                // If sender
-                DEBUG_MSG("Range Test Plugin - Sending heartbeat every %d ms\n", (senderHeartbeat));
-
-                DEBUG_MSG("gpsStatus->getLatitude()     %d\n", gpsStatus->getLatitude());
-                DEBUG_MSG("gpsStatus->getLongitude()    %d\n", gpsStatus->getLongitude());
-                DEBUG_MSG("gpsStatus->getHasLock()      %d\n", gpsStatus->getHasLock());
-                DEBUG_MSG("gpsStatus->getDOP()          %d\n", gpsStatus->getDOP());
-                DEBUG_MSG("gpsStatus->getHasLock()      %d\n", gpsStatus->getHasLock());
-                DEBUG_MSG("pref.fixed_position()        %d\n", radioConfig.preferences.fixed_position);
-
-                messagePersistPluginRadio->sendPayload();
-                return (senderHeartbeat);
-            } else {
-                // Otherwise, we're a receiver.
-
                 return (500);
-            }
-            // TBD
         }
 
     } else {
-        DEBUG_MSG("Range Test Plugin - Disabled\n");
+        DEBUG_MSG("Message Persist Plugin - Disabled\n");
     }
 
     return (INT32_MAX);
@@ -101,26 +74,10 @@ MeshPacket *MessagePersistPluginRadio::allocReply()
     return reply;
 }
 
+// Jake: here we don't want to send a message but rather listen to message sent events and save to file.
 void MessagePersistPluginRadio::sendPayload(NodeNum dest, bool wantReplies)
 {
-    // MeshPacket *p = allocReply();
-    // p->to = dest;
-    // p->decoded.want_response = wantReplies;
 
-    // p->want_ack = true;
-
-    // packetSequence++;
-
-    // static char heartbeatString[20];
-    // snprintf(heartbeatString, sizeof(heartbeatString), "seq %u", packetSequence);
-
-    // p->decoded.payload.size = strlen(heartbeatString); // You must specify how many bytes are in the reply
-    // memcpy(p->decoded.payload.bytes, heartbeatString, p->decoded.payload.size);
-
-    // service.sendToMesh(p);
-
-    // // TODO: Handle this better. We want to keep the phone awake otherwise it stops sending.
-    // powerFSM.trigger(EVENT_CONTACT_FROM_PHONE);
 }
 
 bool MessagePersistPluginRadio::handleReceived(const MeshPacket &mp)
@@ -130,14 +87,14 @@ bool MessagePersistPluginRadio::handleReceived(const MeshPacket &mp)
     if (radioConfig.preferences.message_persist_plugin_enabled) {
 
         auto &p = mp.decoded;
-        // DEBUG_MSG("Received text msg self=0x%0x, from=0x%0x, to=0x%0x, id=%d, msg=%.*s\n",
-        //          nodeDB.getNodeNum(), mp.from, mp.to, mp.id, p.payload.size, p.payload.bytes);
+        DEBUG_MSG("Received text msg self=0x%0x, from=0x%0x, to=0x%0x, id=%d, msg=%.*s\n",
+                nodeDB.getNodeNum(), mp.from, mp.to, mp.id, p.payload.size, p.payload.bytes);
 
         if (getFrom(&mp) != nodeDB.getNodeNum()) {
 
-            // DEBUG_MSG("* * Message came from the mesh\n");
-            // Serial2.println("* * Message came from the mesh");
-            // Serial2.printf("%s", p.payload.bytes);
+            DEBUG_MSG("* * Message came from the mesh\n");
+            Serial2.println("* * Message came from the mesh");
+            Serial2.printf("%s", p.payload.bytes);
             /*
 
 
@@ -146,7 +103,7 @@ bool MessagePersistPluginRadio::handleReceived(const MeshPacket &mp)
 
             NodeInfo *n = nodeDB.getNode(getFrom(&mp));
 
-            if (radioConfig.preferences.message_persist_plugin_save) {
+            if (radioConfig.preferences.message_persist_plugin_enabled) {
                 appendFile(mp);
             }
 
