@@ -35,7 +35,7 @@ int32_t MessagePersistPlugin::runOnce()
         without having to configure it from the PythonAPI or WebUI.
     */
 
-    // radioConfig.preferences.message_persist_plugin_enabled = 1;
+    radioConfig.preferences.message_persist_plugin_enabled = 1;
 
     // Fixed position is useful when testing indoors.
     // radioConfig.preferences.fixed_position = 1;

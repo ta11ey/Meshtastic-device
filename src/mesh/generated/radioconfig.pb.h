@@ -108,7 +108,6 @@ typedef struct _RadioConfig_UserPreferences {
     bool range_test_plugin_enabled;
     uint32_t range_test_plugin_sender;
     bool range_test_plugin_save;
-    bool message_persist_plugin_enabled;
     uint32_t store_forward_plugin_records;
     bool environmental_measurement_plugin_measurement_enabled;
     bool environmental_measurement_plugin_screen_enabled;
@@ -119,6 +118,7 @@ typedef struct _RadioConfig_UserPreferences {
     RadioConfig_UserPreferences_EnvironmentalMeasurementSensorType environmental_measurement_plugin_sensor_type;
     uint32_t environmental_measurement_plugin_sensor_pin;
     bool store_forward_plugin_enabled;
+    bool message_persist_plugin_enabled;
 } RadioConfig_UserPreferences;
 
 typedef struct _RadioConfig {
